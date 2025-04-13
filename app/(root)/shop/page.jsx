@@ -1,34 +1,19 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ProductCard from "../../../components/ProductCard";
-import { fetchProducts } from "../../../utils/api";
 import { useDebounce } from "use-debounce";
+import { useAuth } from "../../../context/AuthContext";
+
 function Page() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
-  // here i'm using the useDebounce hook to debounce the search input for 500ms
-  // this is to prevent the search input from being triggered too many times while typing because in normal
-  // cases the user will type fast and this will cause the search input to be triggered too many times which can use
-  // a lot of resources and cause performance issues
+  const { products } = useAuth();
+
+  // Debounce the search input for 500ms as it saves ressources in some cases but this
+  // time we're just
   const [debouncedSearch] = useDebounce(search, 500);
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const data = await fetchProducts();
-        if (!data) {
-          throw new Error("Something went wrong while fetching data");
-        }
-        setProducts(data);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getProducts();
-  }, []);
-  // here i'm filtering the products based on the category and the search input
+
+  // filter products based on category and search input
   const filteredProducts = products
     .filter((product) => !filter || product.category === filter)
     .filter((product) =>
@@ -36,13 +21,12 @@ function Page() {
         ? true
         : product.title.toLowerCase().includes(debouncedSearch.toLowerCase())
     );
+
   return (
     <div className="w-full h-full p-6 flex gap-6">
-      {/* Sidebar Filters */}
-      <div className="w-1/4 p-4 bg-white shadow-lg rounded-xl">
+      <div className="w-1/4 p-4 bg-white shadow-lg rounded-xl hidden md:block">
         <h2 className="text-xl font-bold mb-4 text-gray-700">Filters</h2>
 
-        {/* Search Input */}
         <input
           type="text"
           placeholder="Search items..."
@@ -51,7 +35,6 @@ function Page() {
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        {/* Category Filter */}
         <select
           name="filter"
           id="filter"
@@ -69,9 +52,8 @@ function Page() {
         </select>
       </div>
 
-      {/* Product List */}
       <div className="w-3/4">
-        {loading ? (
+        {products.length === 0 ? (
           <div className="flex justify-center items-center h-full">
             <h1 className="text-5xl text-gray-700">Loading...</h1>
           </div>

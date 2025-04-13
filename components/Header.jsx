@@ -7,12 +7,11 @@ import Cart from "../public/icons/cart.svg";
 import Logout from "../public/icons/logout.svg";
 
 function Header() {
-  const { isAuthenticated, logout } = useAuth();
-  const [user, setUser] = useState(null);
+  const { isAuthenticated, logout, user } = useAuth();
   return (
     <div className="flex items-center justify-between w-full h-16 bg-white shadow-xl px-6">
       <Link className="text-3xl font-bold text-primary" href="/">
-        yes.
+        <Image src={"/logo.png"} alt="Logo" width={100} height={50} />
       </Link>
 
       <nav className="hidden space-x-6 text-primary sm:flex sm:items-center sm:justify-center">
@@ -42,7 +41,7 @@ function Header() {
 
       {isAuthenticated ? (
         <div className="flex flex-row items-center justify-center gap-4 ml-4">
-          <p>Welcome, {user}</p>
+          <p>Welcome, {user.username}</p>
           <Link
             href={"/cart"}
             className="cursor-pointer flex items-center justify-center"

@@ -1,17 +1,44 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { createContext, useState, useContext, useEffect } from "react";
+import { fetchProducts, getUserCart } from "../utils/api";
 
 // first createing a context
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const router = useRouter();
-  const [user, setUser] = useState(null);
-
+  const [user, setUser] = useState({
+    username: null,
+    id: null,
+    cart: null,
+  });
+  const [products, setProducts] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   // this useeffect is used to check if the user is authenticated or not when the component mounts
   // the empty array means that this useEffect will run only once when the component mounts
+  const getAllproducts = async () => {
+    try {
+      const res = await fetchProducts();
+      if (!res) {
+        console.log("something went wrong");
+      }
+      setProducts(res);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+  const getUserCartItems = async () => {
+    try {
+      const res = await getUserCart(Math.floor(Math.random() * 10) - 1);
+      if (!res) {
+        console.log("something went wrong");
+      }
+      setUser((prevState) => ({ ...prevState, cart: res }));
+    } catch (error) {
+      console.error("Error fetching user cart:", error);
+    }
+  };
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
@@ -37,6 +64,8 @@ export const AuthProvider = ({ children }) => {
       }
     };
     checkAuthStatus();
+    getAllproducts();
+    getUserCartItems();
   }, []);
 
   // this function is used to login the user and set the user state to the username of the user and update related states
@@ -51,7 +80,10 @@ export const AuthProvider = ({ children }) => {
     });
     if (res.ok) {
       setIsAuthenticated(true);
-      setUser(username);
+      setUser({
+        username: username,
+        id: res.id,
+      });
 
       router.push("/");
     } else {
@@ -98,6 +130,8 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         signup,
+        products,
+        setProducts,
       }}
     >
       {children}

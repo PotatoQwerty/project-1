@@ -2,28 +2,21 @@
 import React, { useEffect, useState, use } from "react";
 import ProductDetails from "../../../../components/ProductDetails";
 import { fetchProductById } from "../../../../utils/api";
+import { useAuth } from "../../../../context/AuthContext";
 function page({ params }) {
   const { id } = use(params);
+  const { products } = useAuth();
   // a state to handle the loading state to ensure that data is fetched before rendering components
   const [loading, setLoading] = useState(true);
   // a state to handle the product data
   const [product, setProduct] = useState({});
-  // this useEffect is to fetch data from the API and save it in a state when the component mounts
 
   useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const data = await fetchProductById(id);
-        if (!data) {
-          throw new Error("something went wrong while fetching data");
-        }
-        setProduct(data);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getProducts();
+    const product = products.find((product) => product.id === Number(id));
+    if (product) {
+      setProduct(product);
+      setLoading(false);
+    }
   }, []);
 
   return (
