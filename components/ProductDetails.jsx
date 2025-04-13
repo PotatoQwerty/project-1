@@ -14,7 +14,6 @@ function ProductDetails(props) {
 
   return (
     <div className="flex flex-col lg:flex-row items-start w-full h-full p-6 gap-10">
-      {/* Product Image & Details */}
       <div className="bg-white rounded-xl shadow-lg p-8 w-full lg:w-1/2 flex flex-col items-center">
         <div className="w-full flex justify-center mb-6">
           <Image
@@ -51,7 +50,6 @@ function ProductDetails(props) {
         </div>
       </div>
 
-      {/* Customer Reviews Section */}
       <div className="bg-white rounded-xl shadow-lg p-8 w-full lg:w-1/2">
         <h2 className="text-2xl font-bold text-primary mb-5">
           Customer Reviews

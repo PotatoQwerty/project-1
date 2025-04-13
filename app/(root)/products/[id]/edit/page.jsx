@@ -29,6 +29,8 @@ export default function ProductEditor() {
           description: found.description,
         });
         setLoading(false);
+        // to avoid infinite loop we will set the loading to false
+        // only when we get the product
       }
     }
   }, [products, id]);
@@ -41,7 +43,8 @@ export default function ProductEditor() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Simulate product update
+    //  ONLY updating when we get a valid response from the server
+    //  and not updating the state directly
     try {
       const res = await updateProduct(id, formData);
       if (res !== 200) {
@@ -60,6 +63,7 @@ export default function ProductEditor() {
     }
   };
 
+  // if the loading is true we will return a loading state
   if (loading) return <div>Loading...</div>;
 
   return (

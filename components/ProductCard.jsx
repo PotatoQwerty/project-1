@@ -14,6 +14,8 @@ function ProductCard(props) {
     // this function is used to delete the product from the products array
     // and update the state of the products array in the context
     // it also shows a confirmation dialog before deleting the product
+    // deletion is ONLY done using the deleteProduct function from the api.js file
+    // and the product is removed from the products array in the context
     if (!window.confirm("Are you sure you want to delete this product?")) {
       return;
     }
