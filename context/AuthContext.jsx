@@ -32,7 +32,6 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await getUserCart(Math.floor(Math.random() * 10) - 1);
       if (!res) {
-        console.log("something went wrong");
       }
       setUser((prevState) => ({ ...prevState, cart: res }));
     } catch (error) {

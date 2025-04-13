@@ -17,9 +17,9 @@ export const fetchProductById = async (id) => {
     return response.data;
   } catch (error) {
     console.error("Failed to fetch product by ID:", error);
-    console.log("tnakt");
   }
 };
+
 export const fetchProductsByCategory = async (category) => {
   try {
     const response = await axios.get(
@@ -45,8 +45,6 @@ export const updateProduct = async (id, product) => {
     const response = await axios.put(`${API_URL}/products/${id}`, product);
 
     if (response.status === 200) {
-      console.log("Product updated successfully:", response.data);
-
       return response.status;
     }
   } catch (error) {
@@ -80,7 +78,7 @@ export const updateUserCart = async (userId, cart) => {
     cart
   );
   if (response.status === 200) {
-    return response.data, response.status;
+    return { data: response.data, status: response.status };
   } else {
     throw new Error("Failed to update user cart");
   }

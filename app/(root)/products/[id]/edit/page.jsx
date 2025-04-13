@@ -47,7 +47,7 @@ export default function ProductEditor() {
       if (res !== 200) {
         throw new Error("Failed to update product");
       }
-      console.log("Updated product data:", formData);
+
       setProducts((prev) =>
         prev.map((product) =>
           product.id === Number(id) ? { ...product, ...formData } : product
@@ -56,7 +56,6 @@ export default function ProductEditor() {
 
       alert("Product updated successfully! (Changes are local only)");
     } catch (e) {
-      console.log("Error updating product:", e);
       alert("Failed to update product");
     }
   };

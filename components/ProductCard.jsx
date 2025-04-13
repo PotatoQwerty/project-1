@@ -21,7 +21,6 @@ function ProductCard(props) {
       const res = await deleteProduct(props.id);
 
       if (res.status === 200) {
-        console.log("Product deleted successfully:", res.data);
         setProducts((prevProducts) =>
           prevProducts.filter((product) => product.id !== props.id)
         );

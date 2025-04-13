@@ -5,7 +5,6 @@ import reviews from "../constants/Reviews";
 import Account from "../public/icons/account-dummy.svg";
 
 function ProductDetails(props) {
-  console.log(props.rating.rate);
   // a state to handle the number of reviews to show at a time a simple way to implement pagination
   const [visibleReviews, setVisibleReviews] = useState(5);
 
